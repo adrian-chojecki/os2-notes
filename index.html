@@ -1,0 +1,298 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>OS 2 - Lecture notes...[draft]</title>
+
+		<meta name="description" content="Wersja robocza nowej prezentacji. Rozszerzone opisy niektórych zagadnień...">
+		<meta name="author" content="adrian.chojecki@p.lodz.pl">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/night.css">
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+<!-- Title -->
+				<section>
+					<h2>Operating Systems 2</h2>
+					<h5>Systemy operacyjne 2 - materiały do wykładu</h5>
+					<p>
+						Wersja robocza nowej prezentacji... [12.2022]
+					</p>
+					<hr>
+					<br><br>
+					<p><small><a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.</small>
+					</p>
+				</section>
+<!-- END Title -->
+
+
+<!-- OS definition -->
+				<section>
+					<section id="fragments">
+						<h3>Co to jest system operacyjny?</h3>
+						<p class="fragment"><dfn>System operacyjny </dfn> (ang. <i>Operating System - OS</i>) to oprogramowanie, które zarządza sprzętem i oprogramowaniem komputera, umożliwiając użytkownikowi korzystanie z jego zasobów.</p>
+					</section>
+					<section>
+						<p> System operacyjny odpowiada za zarządzanie pamięcią, przetwarzanie danych, obsługę urządzeń peryferyjnych, zarządzanie procesami oraz inne podstawowe funkcje, które pozwalają na korzystanie z systemu komputerowego.</p>
+						<p class="fragment">Z punktu widzenia programisty powinien zapewniać spójne <em>API</em>, umożliwiające tworzonym aplikacjom korzystać z mechanizmów OS i niezależność od konfiguracji sprzętowej, dzięki <dfn>warstwie abstrakcji sprzętu</dfn> (ang. <i>Hardware Abstraction Level - HAL</i>)</p>
+					</section>
+				</section>
+<!-- END OS definition -->
+
+<!-- History -->
+				<section>
+					<section id="fragments">
+						<h3>Kiedy powstał pierwszy system operacyjny?</h3>
+						<p class="fragment">Pierwszy system operacyjny został stworzony w latach 50. XX wieku, jego celem było ułatwienie pracy z komputerem IBM 704 i był znany jako IBM 704 Operating System. </p>
+					</section>
+					<section>
+						<p>Był to pierwszy system operacyjny, który umożliwiał współbieżne wykonywanie wielu programów, stał się przełomem w dziedzinie informatyki.</p>
+						<p class="fragment">Podobne prace były prowadzone już wcześniej, np. w firmie GM powstał system GMOS dla systemów IBM 701.</p>
+						<p class="fragment"><img data-src="img/ibm704.jpg" height="220" width="400" /></p>
+					</section>
+				</section>
+<!-- END History -->
+
+<!-- History -->
+				<section>
+					<section id="fragments">
+						<h3>Co z tego wynika dla współczesnych OS?</h3>
+						<p>Wiele mechanizmów opracowanych dawniej, dla pierwszych systemów operacynych jest stosowanych do tej pory.</p>
+						<p class="framgnet">Wieloprogramowość i wielozadaniowość, wieloużytkownikowość, dostępność uniwersalnych języków programowania i kompilatorów, niezależnych od platformy sprzętowej.</p>
+                    </section>
+                    <section>
+						<p class>Wiele mechanizmów wywodzących się z teorii systemów operacyjnych (np. metody szeregowania zadań, synchronizacja w obrębie procesów i wątków, obsługa zasobów w trybie wyłącznym) odnosi się do teori systemów rozproszonych i wieloagentowych, może mieć też zastosowanie jako wzorce projektowe we współczesnych aplikacjach (chmura, mikroserwisy).</p>
+					</section>
+				</section>
+<!-- END History -->
+
+<!-- Multitasking -->
+				<section>
+					<section id="fragments">
+						<h3>Co to jest współbieżne wykonanie programów?</h3>
+						<p class="fragment">Współbieżne wykonywanie programów to technika, która pozwala na jednoczesne wykonywanie wielu procesów na tym samym systemie komputerowym.</p>
+					</section>
+					<section>
+						<p>Współbieżność może być realizowana dzięki systemom operacyjnym, które umożliwiają współdzielenie zasobów sprzętowych między różnymi procesami (np. systemy z podziałem czasu procesora). </p>
+						<p class="fragment"> Zrównoleglenie zasobów (np. zwiększenie liczby procesorów) daje możliwośc wykonywania różnych operacji równolegle.</p>
+					</section>
+					<section>
+						<p><img data-src="img/multitasking.png" height="260" width="440" /></p>
+						<p class="fragment"> Współbieżność w systemach z podziałem czasu pozwala na wydajniejsze wykorzystanie dostępnych zasobów, wprowadza interaktywność, skracając czas oczekiwania dla napływających zadań.</p>
+					</section>
+					<section>
+						<p><img data-src="img/deadlock.png" height="260" width="490" /></p>
+					</section>
+					<section>
+						<p> Wspóldzielenie zasobów wprowadza jednak konieczność rozwiązania dodatkowych problemów, które pojawiają się przy wprowadzeniu wielu procesów i wielu użytkowników: </p>
+						<p class="fragment">od konieczności synchronizacji (ryzyko zakleszczeń, sytuacje wyścigu), ochrony zasobów (naruszenie ochrony pamięci, atrybut wykonywalności) po utratę determinizmu (czas odpowiedzi systemu) i możliwość powstawania anomalii trudnych do przewidzenia i prowadzących do utraty funkcjonalności...</p>
+					</section>
+				</section>
+<!-- END Multitasking -->
+
+<!-- Scheduling INTRO -->
+				<section>
+					<section id="fragments">
+						<h3>Zarządzanie zadaniami (procesami)</h3>
+						<ul>
+							<li class="fragment">systemy wsadowe</li>
+							<li class="fragment">systemy z podziałem czasu</li>
+							<li class="fragment">systemy czasu rzeczywistego</li>
+						</ul>
+					</section>
+				</section>
+<!-- END Scheduling INTRO -->
+
+<!-- Scheduling BATCH -->
+				<section>
+					<section id="fragments">
+						<h5>Algorytm kolejkowania FIFO (ang. first-in, first-out)</h5>
+						<p class="fragment"> polega na tym, że zadania są wykonywane w takiej samej kolejności, w jakiej zostały dodane do kolejki.</p>
+					</section>
+					<section>
+						<h5>Algorytm kolejkowania SJF (ang. shortest job first)</h5>
+						<p class="fragment">polega na tym, że zadania są wykonywane w kolejności rosnącego czasu wykonania.</p>
+					</section>
+					<section>
+						<h5>Algorytm kolejkowania SRT (ang. shortest remaining time)</h5>
+						<p class="fragment">polega na tym, że zadania są wykonywane w kolejności malejącej czasu pozostałego do zakończenia.</p>
+					</section>
+					<section>
+						<h5>Algorytm kolejkowania priorytetowego</h5>
+						<p class="fragment"> polega na tym, że zadania są wykonywane w kolejności malejącego priorytetu.
+						<p class="fragment"> Priorytet zadania jest określany przez system operacyjny lub użytkownika i może być zmieniany w trakcie wykonywania zadania.</p>
+					</section>
+				</section>
+<!-- END Scheduling BATCH -->
+
+<!-- Scheduling TIME -->
+				<section>
+					<section id="fragments">
+						<h5>Algorytm karuzelowy (ang. round robin)</h5>
+						<p class="fragment"> polega na tym, że każde zadanie otrzymuje przydział czasu procesora (tzw. timeslice/timeslot) i jest wykonywane, aż czas procesora się wyczerpie. </p>
+						<p class="fragment"> Następnie zadanie jest przesuwane na koniec kolejki, a kolejne zadanie otrzymuje czas procesora. Przełączanie zadań może wymagać wywłaszczania (ang. pre-emption) i przełączanie kontekstu (ang. context switching) przez system operacyjny.</p>
+					</section>
+					<section>
+						<h5>Algorytm z wywłaszczaniem/opóźnionym wywłaszczaniem (ang. shortest job first)</h5>
+						<p class="fragment">polega na tym, że zadanie wykonywane jest aż do zakończenia lub do momentu, gdy wymaga ono dostępu do zasobów, które są aktualnie zajęte przez inne zadanie.</p> <p class="fragment">W takim przypadku zadanie jest odsunięte na koniec kolejki i kolejne zadanie jest wybrane do wykonania.</p>
+						<p class="fragment">Jeśli zadanie wymaga dostępu do zasobów, które są aktualnie zajęte, zostaje ono odsunięte na koniec kolejki</p>
+					</section>
+				</section>
+<!-- END Scheduling TIME -->
+
+<!-- Scheduling RT -->
+				<section>
+					<section id="fragments">
+						<h5>Algorytm EDF (ang. Earliest Deadline First)</h5>
+						<p class="fragment"> polega na tym, że zadania są wykonywane w kolejności malejącej terminu końcowego.</p>
+						<p class="fragment"> Każde zadanie w momencie napłynięcia musi mieć przypisany tzw. deadline, w którym powinno zostać obsłużone, gwarantując, że maksymalny czas odpowiedzi dla systemu RT nie zostanie przekroczony.</p>
+					</section>
+					<section>
+						<h5>Algorytm RMS (ang. Rate Monotonic Scheduling)</h5>
+						<p class="fragment">polega na tym, że każde zadanie w systemie ma określoną częstotliwość wykonywania (częstotliwość próbkowania) i jest ono przydzielane do kolejki w kolejności od niższej częstotliwości do wyższej częstotliwości.</p>
+						<p class="fragment">RMS zakłada, że wszystkie zadania są okresowe i mają stałe czasy trwania. Algorytm gwarantuje, że każde z zadań będzie wykonywane zawsze co określony czas, a czas odpowiedzi może być określony deterministycznie.</p>
+					</section>
+					<section>
+						<h5>Algorytm LLF (ang. Least Laxity First)</h5>
+						<p class="fragment">polega na tym, że zadania są wykonywane w kolejności malejącej różnicy między terminem końcowym (deadline), a czasem pozostałym do wykonania.</p>
+						<p class="fragment">Różnica ta nazywana jest "laksem" (ang. laxity) i może być interpretowana jako wskaźnik stopnia zaawansowania zadania. Zadania z najmniejszym laksem są wykonywane jako pierwsze, a zadania z większym laksem są przesuwane na koniec kolejki</p>
+						<p class="fragment">LLF sprawdza się szczególnie w przypadku zadań o różnych deadlinach i różnym czasie wykonania.</p>
+					</section>
+				</section>
+<!-- END Scheduling RT -->
+
+<!-- Scheduling Desktop -->
+				<section>
+					<section id="fragments">
+						<h3>Completely Fair Scheduler (CFS)</h3>
+						<p class="fragment">jest systemem kolejkowania procesów, który jest używany przez jądro systemu Linux. Jego głównym celem jest zapewnienie równego podziału czasu procesora między wszystkie procesy, co zwiększa wydajność i zmniejsza opóźnienia w działaniu systemu.</p>
+					</section>
+					<section>
+						<p>CFS działa na zasadzie drzewa binarnego, w którym każdy proces jest reprezentowany przez węzeł. Węzły są sortowane według ich "ważności", która jest określona przez ich "wagę" oraz "czas oczekiwania" na procesor.</p>
+					</section>
+					<section>
+						<p>CFS korzysta z algorytmu "wyszukiwania binarnego" aby znaleźć następny proces do uruchomienia.</p>
+						<p class="fragment">Procesy, które otrzymały już dostęp do procesora są umieszczanie na niższych poziomach drzewa. Czas oczekiwania procesu jest obliczany na podstawie ilości czasu, jaki proces spędził na procesorze w stosunku do jego wagi.</p>
+					</section>
+					<section>
+						<p>CFS jest uważany za bardziej skuteczny w porównaniu do innych algorytmów kolejkowania, takich jak algorytm karuzelowy (Round Robin), ponieważ dostarcza bardziej równomiernego dostępu (jest "fair") do procesora dla różnych procesów (różne priorytety, różni użytkownicy), niezależnie od ich priorytetu.</p>
+					</section>
+				</section>
+
+				<section>
+					<section id="fragments">
+						<h3>Multilevel Feedback Queue Scheduling (MLFQ)</h3>
+						<p class="fragment">polega na tym, że procesy przypisywane są do różnych kolejek (ang. queues), każda z nich przydzielona do określonego poziomu priorytetu.</p>
+						<p class="fragment">Procesy w kolejce o wyższym poziomie priorytetu otrzymują więcej czasu procesora niż te w kolejce o niższym poziomie.</p>
+					</section>
+					<section>
+						<p class="fragment">Jeśli proces wykorzystuje zbyt dużo czasu procesora, jego priorytet jest obniżany i przenoszony do kolejki o niższym poziomie. </p>
+						<p>Procesy, które nie korzystają zbyt dużo z procesora, mogą awansować do kolejki o wyższym poziomie priorytetu.</p>
+						<p class="fragment"><small>MLFQ pozwala na uwzględnienie różnych wymagań dla różnych procesów. Procesy wymagające wysokiej wydajności (np. gry, aplikacje graficzne) mogą być przydzielane do kolejki o wyższym poziomie priorytetu, podczas gdy procesy o niższych wymaganiach (np. edytor tekstu) mogą być przydzielane do kolejki o niższym poziomie.</small></p>
+					</section>
+					<section>
+						<p>W ramach pojedynczej kolejki na danym poziomie priorytetu najczesciej stosowane są algorytmy koruzelowe (Round Robin). Na najniższym poziomie wykorzystywana jest kolejka FIFO i kolejkowanie FCFS, procesy w tej kolejce mogą być zagrożone głodzeniem.</p>
+					</section>
+					<section>
+					    <p><img data-src="img/mlfq.png" height="220" width="400" /></p>
+						<p class="fragment">Metoda ta jest stosowana przykładowo w systemie Windows (od >NT), zawiera 32 poziomy kolejek i 6 klas priorytetów, możliwych do ustawienia przez odpowiednie syscalle [https://learn.microsoft.com/en-us/windows/win32/procthread/scheduling-priorities].</p>
+					</section>
+				</section>
+<!-- END Scheduling Desktop -->
+
+<!-- Memory Segmentation-->
+				<section>
+					<section id="fragments">
+						<h3>Co to jest segmentacja pamięci?</h3>
+						<p class="fragment"> Segmentacja pamięci to technika wirtualizacji pamięci, w której system operacyjny dzieli wirtualną przestrzeń pamięci na mniejsze fragmenty, zwane segmentami. </p>
+						<p class="fragment">Każdy proces posiada swój własny zestaw segmentów, które są odseparowane od segmentów innych procesów.</p>
+					</section>
+					<section>
+						<p> Adresy logiczne segmentów dla każdego procesu oraz obszarów jego pamięci (stos, sterta, kod programu, dane) są wirtualizowane za pomocą dwóch wskaźników w postaci granicy (ang. boundary) i przesunięcia (ang. offset).</p>
+						<p class="fragment"> W celu translacji na adresy fizyczne, do właściwego adresu komórki pamięci dodany zostaje offset, a wynik musi być mniejszy niż boundary.</p>
+					</section>
+					<section>
+						<p>W przypadku x86, służy do tego dedykownay blok sprzętowy procesora - MMU.</p>
+						<p class="fragment">Segmentacja pozwala na zwiększenie efektywności zarządzania pamięcią, system operacyjny jest w stanie przydzielić różne poziomy dostępu do różnych segementów, zabezpieczyć pamięć przed niepowołanym dostępem, zwiększa także efektywność pamięci podręcznej i usprawnia przełączania kontekstu.</p>
+					</section>
+					<section>
+						<p> Przy takim sposobie zarządzania pamiącią może dochodzić do fragmentacji - powstawania wolnych bloków, które są zbyt małe, aby pomieścić nowy proces.</p>
+						<p class="fragment"> Wymaga to wyszukiwania pierwszego wolnego bloku o wymaganym rozmiarze, zwiększając czas potrzebny do przydzielenia pamięci dla nowych procesów.</p>
+					</section>
+				</section>
+<!-- END Memory Segmentation -->
+
+<!-- Memory Paging-->
+				<section>
+					<section id="fragments">
+						<h3>Co to jest stronicowanie pamięci?</h3>
+						<p class="fragment"> Stronicowanie pamięci wirtualnej to technika wirtualizacji pamięci, w której system operacyjny dzieli wirtualną przestrzeń pamięci na mniejsze fragmenty, zwane stronami. </p>
+						<p class="fragment">Stronicowanie umożliwia procesom pracę z dużymi przestrzeniami pamięci, nawet jeśli fizyczna pamięć komputera jest ograniczona.</p>
+					</section>
+					<section>
+						<p>System operacyjny zajmuje się przeprowadzaniem translacji adresów między wirtualnymi a fizycznymi adresami pamięci, przenosząc strony pamięci z wirtualnej na fizyczną i odwrotnie, w zależności od potrzeb procesów.</p>
+						<p class="fragment">Strony są przydzielane do procesów, a procesor przydziela adresy fizyczne stron do adresów logicznych procesu, pozwalając procesowi na dostęp do pamięci operacyjnej.</p>
+					</section>
+					<section>
+						<p>Ramka (ang. frame) to pojedynczy blok pamięci operacyjnej, który jest używany przez system operacyjny do alokacji pamięci dla procesów. </p>
+						<p class="fragment">W metodzie stronicowania, pamięć operacyjna jest dzielona na mniejsze bloki, które nazywane są ramkami, i każda strona jest przydzielana do jednej ramki.</p>
+						<p class="fragment"><small>Strony są również używane w przypadku wirtualizacji pamięci, gdzie system operacyjny tworzy wirtualną przestrzeń adresową dla każdego procesu, pozwala na alokację pamięci dla procesu, bez konieczności posiadania jej fizycznie</small></p>
+					</section>
+					<section>
+						<p>Ramki mogą być przydzielane i zwalniane dynamicznie w celu dostosowania do potrzeb procesów i zarządzania dostępnością pamięci operacyjnej. W metodzie stronicowania ramki służą do alokacji pamięci dla stron.</p>
+						<p class="fragment">Strona jest pojedynczym blokiem pamięci, który jest przydzielany do jednego procesu. Każda strona ma swój unikalny adres, który pozwala na dostęp do danych znajdujących się w danej stronie.</p>
+					</section>
+					<section>
+						<p>
+							<figure>
+								<img data-src="img/paging.webp" height="433" width="666" />
+								<figcaption><a href="https://gabrieletolomei.wordpress.com/miscellanea/operating-systems/virtual-memory-paging-and-swapping/"><small>gabrieletolomei.wordpress.com/miscellanea/operating-systems/virtual-memory-paging-and-swapping</small></a></figcaption>
+						</figure>
+						</p>
+					</section>
+					<section>
+						<p>Tablica Translation Lookaside Buffer (TLB) to specyficzny rodzaj pamięci podręcznej, która jest używana przez procesor do przyspieszenia procesu mapowania adresów logicznych na fizyczne w systemach operacyjnych, które korzystają z pamięci wirtualnej lub stronicowania.</p>
+						<p class="fragment">TLB jest zintegrowana z procesorem i przechowuje najnowsze mapowanie adresów, które zostały użyte przez procesor. </p>
+					</section>
+					<section>
+						<p><small>Tablica TLB jest typowo mała w porównaniu z całkowitą ilością dostępnej pamięci operacyjnej, co oznacza że nie wszystkie adresy są przechowywane w TLB...</small></p>
+						<p class="fragment">W momencie gdy procesor potrzebuje dostępu do określonego adresu pamięci, sprawdza najpierw TLB, czy adres jest już zmapowany i czy dostępne są wszystkie potrzebne informacje. </p>
+						<p class="fragment">W przypadku braku odpowiedniego adresu w TLB, procesor przeprowadza tzw. "miss" i przeszukuje tablicę mapowania znajdującą się w pamięci operacyjnej. W razie znalezienia odpowiedniego adresu, system operacyjny zazwyczaj wrzuca go do TLB, zwiększając szybkość dostępu w przyszłości.</p>
+					</section>
+				</section>
+<!-- END Memory Paging -->
+
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>
